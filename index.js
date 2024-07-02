@@ -7,10 +7,10 @@ const dotenv = require('dotenv').config();
 const app = express();
 
 //Rutas
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/auth', require('./routes/auth_route'));
 
 
 //Escuchar peticiones
 app.listen( process.env.PORT, () => {
     console.log(`Servidor corriendo en puerto ${ process.env.PORT }`)
-})
+});
