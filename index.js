@@ -1,11 +1,13 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
+
+
 
 //Creando el servidor con express
 const app = express();
 
 //Rutas
-app.use('/api/auth', require(''))
+app.use('/api/auth', require('./routes/auth'));
 
 
 //Escuchar peticiones
