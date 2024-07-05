@@ -1,10 +1,13 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 
 
 //Creando el servidor con express
 const app = express();
+
+//Lectura y parseo del body o respuestas
+app.use(express.json());
 
 //Rutas
 app.use('/api/auth', require('./routes/auth_route'));
