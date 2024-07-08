@@ -2,8 +2,8 @@
 // host + /api/auth
 
 const { Router } = require('express');
-const { crearUsuario,
-        loginUsuario,
+const { createUser,
+        loginUser,
         revalidarToken
       } = require('../controllers/auth_controller');
 const router = Router();
@@ -17,7 +17,7 @@ router.post('/nuevo',
         check('password', 'El password debe de ser de minimo 8 caracteres').isLength({min:8}),
         validarCampos
     ], //middlewares
-     crearUsuario);
+    createUser);
 
 router.post('/',
     [
@@ -25,7 +25,7 @@ router.post('/',
         check('password', 'El password debe de ser de minimo 8 caracteres').isLength({min:8}),
         validarCampos
     ],
-    loginUsuario);
+    loginUser);
 
 router.get('/renovar', revalidarToken);
 
