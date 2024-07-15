@@ -11,10 +11,10 @@ const createUser = async (req, res = response) => {
 
 
     const user = new UserSchema(req.body);
-    let token = null;
+    //let token = null;
 
 
-    try {
+    try {   
         const verifyEmail = await UserSchema.findOne({ email });
 
         if (verifyEmail) {
@@ -57,7 +57,7 @@ const loginUser = async (req, res = response) => {
         if (!usuarioDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'El email no fue encontrado'
+                msg: 'Correo electronico o contraseña incorrectos'
             })
         }
 
@@ -66,11 +66,14 @@ const loginUser = async (req, res = response) => {
         if (!validarPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El password no valida',
+                msg: 'Contraseña invalida',
             })
         }
-        const token = await generateJwt(usuarioDB._id);
-        return res.status(200).json({msg: authenticatedUser,ok:true,token:token})
+        return res.status(200).json({
+            msg: authenticatedUser,
+            ok:true,
+            token:token
+        })
 
     } catch (error) {
         console.log(error)
@@ -83,10 +86,13 @@ const loginUser = async (req, res = response) => {
 
 }
 
-const revalidarToken = (req, res = response) => {
+const revalidarToken = async(req, res = response) => {
+
+    const token = await generateJwt(req.uid, req.name);
+
     return res.json({
         ok: true,
-        msg: 'Renovar Token'
+        token
     })
 }
 

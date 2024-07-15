@@ -27,7 +27,35 @@ const generateJwt = (uid) => {
 
 }
 
+const verificarToken = ( token ) => {
+
+    return new Promise((resolve, reject)=>{
+        jwt.verify(token,`${process.env.JWT_SECRET}`,(error,decode) =>{
+            if(error){
+                console.log(error);
+                reject('No se pudo generar el JWT')
+            }else{
+                const fechaExpiracionLocal = new Date(decode.exp * 1000);
+                console.log(fechaExpiracionLocal)
+                const fechaInicalLocal = new Date(decode.iat * 1000);
+                console.log(fechaInicalLocal);
+                const fechaInicial = new Date(fechaInicalLocal);
+                console.log("Fecha inicial " + fechaInicial)
+                const fechaExpiracion = new Date(fechaExpiracionLocal);
+                console.log("Fecha expiracion " + fechaExpiracion)
+                const fechas = {
+                    fechaInicial,
+                    fechaExpiracion
+                }
+                resolve(fechas)
+            }
+        })
+
+    }); 
+}
+
 
 module.exports = {
-    generateJwt
+    generateJwt,
+    verificarToken
 }
