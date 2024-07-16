@@ -3,6 +3,7 @@
 
 const { Router } = require('express');
 const { createUser,
+        findByIdUser,
         loginUser,
         revalidarToken
       } = require('../controllers/auth_controller');
@@ -27,6 +28,8 @@ router.post('/',
         validarCampos
     ],
     loginUser);
+
+router.get('/buscar_id/:_id',findByIdUser)    
 
 router.get('/renovar', validarJWT, revalidarToken);
 

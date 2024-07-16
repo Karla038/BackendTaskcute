@@ -7,11 +7,11 @@ const UserSchema = require('../models/Users_models');
 
 const createUser = async (req, res = response) => {
 
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
 
     const user = new UserSchema(req.body);
-    //let token = null;
+    let token = null;
 
 
     try {   
@@ -26,21 +26,20 @@ const createUser = async (req, res = response) => {
 
         const salt = bcrypt.genSaltSync();
         user.password = await bcrypt.hashSync(password, salt);
-
+        user._id = undefined;
         console.log(user)
         const userSaved = await user.save();
-        
+        console.log(userSaved)
         token = await generateJwt(userSaved._id);
         console.log('token' + token);
 
-    } catch {
-        console.log('Error al guarda la base de datos')
+    } catch(error) {
+        console.log('Error al guarda la base de datos' + error)
     }
     res.status(201).json({
         ok: true,
         msg: savedUser,
-        user,
-        token
+        data:token
     })
 }
 
@@ -49,6 +48,8 @@ const loginUser = async (req, res = response) => {
     const { email, password } = req.body
 
     console.log(req.body);
+
+    let token = null;
 
     try {
 
@@ -70,6 +71,8 @@ const loginUser = async (req, res = response) => {
                 msg: 'Contraseña invalida',
             })
         }
+        token = await generateJwt(usuarioDB._id);
+
         return res.status(200).json({
             msg: authenticatedUser,
             ok:true,
@@ -97,8 +100,41 @@ const revalidarToken = async(req, res = response) => {
     })
 }
 
+const findByIdUser = async(req,res = response) =>{
+
+
+    // obteniendo el parametro id para la busqueda por id
+    const id = req.params._id;
+    console.log(id)
+    // Creando una variable donde almacenaria el usuario
+    let user = null;
+    try {
+        user = await UserSchema.findById(id);
+    } catch (error) {
+        console.log(error);                        
+        return res.json({
+            ok: false,
+            msg: 'Error inesperado '
+        }).status(500);
+    }
+    if(!user){
+        return res.json({
+            ok: false,
+            msg: 'El usuario no existe en la base de datos'
+            
+        }).status(404);
+    }    
+    user.password = undefined;
+    return res.json({
+        ok: true,
+        msg: 'Busqueda por id se consulto correctamente',
+        data: user
+    }).status(200);
+}
+
 
 module.exports = {
+    findByIdUser,
     createUser,
     loginUser,
     revalidarToken

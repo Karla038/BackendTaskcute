@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const generateJwt = (uid) => {
-
+const generateJwt = (_id) => {
     return new Promise((resolve, reject)=>{
 
 
     const payload = {
-        uid
+        _id
     }
 
     //especify a algorit authenticated
