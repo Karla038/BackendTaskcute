@@ -12,7 +12,7 @@ const generateJwt = (uid) => {
     //especify a algorit authenticated
     const optionsSignIn = {
         algorithm: 'HS256',
-        expiresIn: '5m'
+        expiresIn: '10m'
     }
     jwt.sign(payload, `${process.env.JWT_SECRET}`, optionsSignIn, function (error, token) {
         if (error) {

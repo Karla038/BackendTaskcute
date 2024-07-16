@@ -29,6 +29,7 @@ const createUser = async (req, res = response) => {
 
         console.log(user)
         const userSaved = await user.save();
+        
         token = await generateJwt(userSaved._id);
         console.log('token' + token);
 
