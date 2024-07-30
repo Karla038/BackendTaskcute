@@ -1,7 +1,7 @@
 const mongoose= require('mongoose');
 
-const DB_Connection = 'mongodb+srv://aphospital:KrFaQIvi9grg19KY@cluster0.rfvwvoj.mongodb.net/aphospital';
-
+//const DB_Connection = 'mongodb+srv://task:NhL2iwmJHUPC6dxn@taskcute.swnl72m.mongodb.net/?retryWrites=true&w=majority&appName=TaskCute';
+const DB_Connection = 'mongodb+srv://taskcute:rQ8VZKwCL2EAdkEh@cluster0.rfvwvoj.mongodb.net/taskcute';
 const dbConnection = async() => {
 
     try {
