@@ -78,7 +78,7 @@ const loginUser = async (req, res = response) => {
         return res.status(200).json({
             msg: authenticatedUser,
             ok:true,
-            token:token
+            data:token
         })
 
     } catch (error) {
