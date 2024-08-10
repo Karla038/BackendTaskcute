@@ -18,7 +18,6 @@ app.use(cors('*'));
 
 //Rutas
 app.use('/api/auth', require('./routes/auth_route'));
-app.use('/api/tasks', require('./routes/task_route'));
 
 
 //Escuchar peticiones

@@ -3,8 +3,6 @@ const { authenticatedUser,savedUser } = require('../utils/constants');
 const { generateJwt } = require('../helpers/jwt')
 const { response } = require('express');
 const UserSchema = require('../models/Users_models');
-const mongoose = require('mongoose');
-
 
 
 const createUser = async (req, res = response) => {
@@ -12,7 +10,6 @@ const createUser = async (req, res = response) => {
     const { email, password } = req.body;
 
 
-    delete req.body._id; 
     const user = new UserSchema(req.body);
     let token = null;
 
@@ -29,6 +26,7 @@ const createUser = async (req, res = response) => {
 
         const salt = bcrypt.genSaltSync();
         user.password = await bcrypt.hashSync(password, salt);
+        user._id = undefined;
         console.log(user)
         const userSaved = await user.save();
         console.log(userSaved)
@@ -107,7 +105,7 @@ const findByIdUser = async(req,res = response) =>{
 
     // obteniendo el parametro id para la busqueda por id
     const id = req.params._id;
-    console.log("id parametro"+ id)
+    console.log(id)
     // Creando una variable donde almacenaria el usuario
     let user = null;
     try {

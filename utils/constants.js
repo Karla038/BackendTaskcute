@@ -1,4 +1,4 @@
-const savedUser = 'Usuario Creado Correctamente, Inicia Sesion Para Disfrutar la app';
+const savedUser = 'Usuario Creado Correctamente';
 const authenticatedUser = 'Inicio de Sesion correctamente';
 
 module.exports = {
