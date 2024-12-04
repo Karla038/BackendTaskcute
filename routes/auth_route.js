@@ -2,13 +2,15 @@
 // host + /api/auth
 
 const { Router } = require('express');
-const { crearUsuario,
-        loginUsuario,
+const { createUser,
+        findByIdUser,
+        loginUser,
         revalidarToken
       } = require('../controllers/auth_controller');
 const router = Router();
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validacion_campos');
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 router.post('/nuevo',
     [
@@ -17,7 +19,7 @@ router.post('/nuevo',
         check('password', 'El password debe de ser de minimo 8 caracteres').isLength({min:8}),
         validarCampos
     ], //middlewares
-     crearUsuario);
+    createUser);
 
 router.post('/',
     [
@@ -25,8 +27,10 @@ router.post('/',
         check('password', 'El password debe de ser de minimo 8 caracteres').isLength({min:8}),
         validarCampos
     ],
-    loginUsuario);
+    loginUser);
 
-router.get('/renovar', revalidarToken);
+router.get('/buscar_id/:_id',findByIdUser)    
+
+router.get('/renovar', validarJWT, revalidarToken);
 
 module.exports = router;

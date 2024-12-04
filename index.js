@@ -1,33 +1,39 @@
 const express = require('express');
-const { dbConnection } = require('./database/config'); 
-const cors = require('cors'); // Importa el paquete cors
 require('dotenv').config();
+const cors = require('cors');
+const { dbConnection } = require('./database/config');
+const fs = require('fs');
 
 
 
 //Creando el servidor con express
 const app = express();
-app.use(cors());
 
+//Base de datos 
+dbConnection();
 
 //Lectura y parseo del body o respuestas
 app.use(express.json());
 
-dbConnection().then(() => {
-    console.log('La base de datos está conectada');
-    // Aquí puedes agregar más lógica si es necesario
-}).catch(err => {
-    console.error('No se pudo conectar a la base de datos:', err);
-});
-
+//Cors
+// app.use(cors('*'));
 
 //Rutas
 app.use('/api/auth', require('./routes/auth_route'));
 app.use('/api/tasks', require('./routes/task_route'));
 
+// Leer certificados
+const privateKey = fs.readFileSync('/etc/nginx/ssl/nginx-taskcute.key', 'utf8');
+const certificate = fs.readFileSync('/etc/nginx/ssl/nginx-taskcute.crt', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
 
 //Escuchar peticiones
-app.listen( process.env.PORT, () => {
-    console.log(`Servidor corriendo en puerto ${ process.env.PORT }`)
-    
+// app.listen( process.env.PORT, () => {
+//     console.log(`Servidor corriendo en puerto ${ process.env.PORT }`)
+// });
+
+// Escuchar peticiones con HTTPS
+https.createServer(credentials, app).listen(process.env.PORT, () => {
+    console.log(`Servidor corriendo en puerto ${process.env.PORT}`);
 });
